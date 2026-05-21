@@ -1,46 +1,85 @@
 # 🛡️ SentinelX
 
-**SentinelX** is a real-time anomaly detection system designed to monitor system logs and performance metrics across distributed services. It leverages machine learning to detect unusual patterns and potential system failures before they escalate.
+**SentinelX** is a real-time anomaly detection system designed to monitor backend infrastructure logs and system performance metrics. The project uses machine learning to identify abnormal system behavior and simulate observability workflows commonly used in distributed systems.
 
 ---
 
 ## Features
 
-- **Real-Time Monitoring**
-  - Processes high-volume system logs and metrics
-  - Handles 10K+ events per minute (simulated)
+- **Real-Time Log Ingestion**
+  - Continuously generates and processes simulated backend system logs
+  - Tracks service-level metrics including latency, CPU usage, memory usage, request counts, and error rates
 
 - **ML-Based Anomaly Detection**
-  - Autoencoder (PyTorch) for reconstruction-based detection
-  - Isolation Forest for statistical anomaly detection
-  - Hybrid detection pipeline for improved accuracy
+  - PyTorch autoencoder trained on normal system behavior
+  - Reconstruction-error-based anomaly detection pipeline
+  - Dynamically calculated anomaly threshold using training statistics
 
-- **Streaming Pipeline**
-  - Log → Scaler → Model → Reconstruction Error → Anomaly Decision
-  - Designed for scalable, distributed environments
+- **REST API Backend**
+  - Built with FastAPI for real-time inference and log ingestion
+  - Exposes endpoints for:
+    - log ingestion
+    - anomaly retrieval
+    - health monitoring
+    - training data export
 
-- **System Metrics Tracking**
-  - Latency, error rate, CPU usage, memory usage
-  - Request volume and service-level monitoring
+- **Data Preprocessing Pipeline**
+  - StandardScaler preprocessing for feature normalization
+  - Consistent training and inference pipelines
 
--  **Scalable Architecture**
-  - Backend built with FastAPI
-  - Designed for containerized deployment (Docker, Kubernetes ready)
+- **Modular Architecture**
+  - Structured for future integration with:
+    - Kafka / Redis Streams
+    - PostgreSQL
+    - Docker & Kubernetes
+    - Monitoring dashboards
 
 ---
 
-## Tech Stack
+## ML Pipeline
 
-- **Backend:** FastAPI (Python)  
-- **Machine Learning:** PyTorch, Scikit-learn  
-- **Data Processing:** NumPy, Pandas  
-- **Model Storage:** joblib  
-- **API Testing:** Postman  
-- **Dev Environment:** Python 3.12, Anaconda  
+```text
+Log Input
+   ↓
+Feature Extraction
+   ↓
+Feature Scaling (StandardScaler)
+   ↓
+PyTorch Autoencoder
+   ↓
+Reconstruction Error Calculation
+   ↓
+Threshold Comparison
+   ↓
+Anomaly Classification
+```
 
 ---
 
 ## System Architecture
 
 ```text
-Log Input → Preprocessing → Feature Scaling → ML Model → Reconstruction Error → Anomaly Classification
+Log Generator
+      ↓
+FastAPI Backend
+      ↓
+Preprocessing Pipeline
+      ↓
+PyTorch Inference
+      ↓
+Anomaly Detection
+      ↓
+REST API Response
+```
+
+---
+
+## Current Status
+
+SentinelX is currently under active development. The current implementation focuses on:
+- real-time log ingestion
+- ML inference pipelines
+- anomaly scoring
+- backend API integration
+
+Future phases include distributed streaming, persistent storage, monitoring dashboards, container orchestration, and auto-healing workflows.
